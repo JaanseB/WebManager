@@ -1,0 +1,134 @@
+<html>
+<head>
+    <!-- META -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Optimize mobile viewport -->
+
+    <title>Web Manager</title>
+
+    <!-- SCROLLS -->
+    <link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css"><!-- load bootstrap -->
+    <style>
+        html                    { overflow-y:scroll; }
+        body{
+            background-image: url('/img/background.jpg');
+            background-size: cover;
+        }
+        .panel-heading:before {
+          content: " ";
+          display: table;
+        }
+        .panel-heading:after {
+          clear: both;
+        }
+        .panel-tasklist {
+          border-color: #337ab7;
+        }
+        .panel-tasklist > .panel-heading {
+          color: #fff;
+          background-color: #337ab7;
+          border-color: #337ab7;
+          font-weight: bold;
+          font-size: large;
+        }
+        .panel-tasklist > .panel-heading > a
+        {
+            color:#fff;
+        }
+        .panel-tasklist > .panel-heading > a:hover
+        {
+            color:darkblue;
+        }
+        .panel-tasklist > .panel-heading + .panel-collapse > .panel-body {
+          border-top-color: #337ab7;
+        }
+        .panel-tasklist > .panel-heading .badge {
+          color: #337ab7;
+          background-color: #fff;
+        }
+        .panel-tasklist > .panel-footer + .panel-collapse > .panel-body {
+          border-bottom-color: #337ab7;
+        }
+        
+        .taskdescriptioninput{
+            margin-top:1%;
+        }
+        
+        .dropdown-menu li{
+            margin-left:10px;
+            margin-right:10px;
+        }
+    </style>
+
+    <!-- SPELLS -->
+    <script src="/lib/jquery/jquery-3.2.1.min.js"></script><!-- load jquery -->
+    <script src="/lib/bootstrap/js/bootstrap.min.js"></script><!-- load jquery -->
+    <script src="/lib/jqueryui/jquery-ui.min.js"></script><!-- load jquery -->
+    <script src="/lib/angular/angular.min.js"></script><!-- load angular -->
+    <script src="/lib/core.js"></script>
+    
+    <script type="text/javascript">
+    
+        function drop(ev)
+        {
+            ev.preventDefault();
+            alert("Droppred in");
+        }
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+        
+        
+    </script>
+   
+
+</head>
+<body ng-app="TaskManager" ng-controller="mainController">
+    
+    <ng-include src="'/views/components/navigation.html'"></ng-include>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-3 col-sm-3 col-md-4 col-lg-3 dropzone" ng-repeat="tasklist in tasklists">
+                <div class="panel panel-tasklist" bin="bin" droppable drop="handleDrop()" id="{{tasklist._id}}">
+                    <div class="panel-heading clearfix">{{ tasklist.title }}<a href="#" class="pull-right" ng-click="deleteTaskList(tasklist._id)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a></div>
+                   <div class="list-group">
+                      <a href="#" id="{{task._id}}" class="list-group-item list-group-item-action flex-column align-items-start task" ng-repeat="task in tasks | filter: {tasklistID : tasklist._id}" draggable>
+                        <div class="d-flex w-100 justify-content-between">
+                          <h4 class="mb-1 clearfix">{{ task.title }}  <small class="pull-right">3 days ago <span class="glyphicon glyphicon-remove" aria-hidden="true"  ng-click="deleteTask(task._id)"></span></small></h4>        
+                        </div>
+                        <p class="mb-1">{{task.description}}</p>                     
+                      </a>                    
+                  </div>
+                  <div class="panel-footer">
+                     <form ng-submit="createTask(tasklist._id, tasklist.taskData);tasklist.taskData={}">
+                        <div class="form-group">
+                             <div class="input-group">            
+                                <input type="text" class="form-control" placeholder="Create a new task" ng-model="tasklist.taskData.title">
+                                 <span class="input-group-btn ">
+                                    <button class="btn btn-default" type="submit">Add!</button>
+                                 </span>
+
+                            </div>                        
+                            <textarea class="form-control taskdescriptioninput" placeholder="Task Description" ng-model="tasklist.taskData.description" rows="5" ng-show="tasklist.taskData.title"></textarea>
+                          </div>
+                      </form>
+                    </div>                      
+                </div>
+            </div>
+             <div class="col-xs-3 col-sm-3 col-md-4 col-lg-3">
+                <form ng-submit="createTaskList()">
+                    <div class="input-group">
+                        <input type="text" class="form-control input-lg text-center" placeholder="Create a new list" ng-model="tasklistData.title">
+                         <span class="input-group-btn ">
+                            <button class="btn btn-default input-lg" type="submit">Go!</button>
+                         </span>
+                    </div>    
+                    
+                </form>
+            </div>
+        </div>
+           
+    </div>
+
+</body>
+</html>
