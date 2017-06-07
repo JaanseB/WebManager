@@ -58,6 +58,11 @@
             margin-left:10px;
             margin-right:10px;
         }
+        
+        h1 {
+            color:white;
+            font-weight:bold;
+        }
     </style>
 
     <!-- SPELLS -->
@@ -87,6 +92,7 @@
     
     <ng-include src="'/views/components/navigation.html'"></ng-include>
     <div class="container-fluid">
+        <h1>Board - {{currentTaskBoard.title}}</h1>
         <div class="row">
             <div class="col-xs-3 col-sm-3 col-md-4 col-lg-3 dropzone" ng-repeat="tasklist in tasklists">
                 <div class="panel panel-tasklist" bin="bin" droppable drop="handleDrop()" id="{{tasklist._id}}">

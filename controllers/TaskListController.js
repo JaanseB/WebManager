@@ -28,15 +28,27 @@ var TaskListController = function(){
         });   
     }
     
-    self.AddTaskList = function (title, response)
+     self.GetTaskListsByBoard = function (id, response)
+    {
+        TaskList.find({ taskBoardID: id }).exec(function(err, taskslists){            
+           
+            if (err)
+                response.send(err);
+            response.json(taskslists);                   
+            
+        });
+    }
+    
+    self.AddTaskList = function (body, response)
     {
     
         TaskList.create({
-            title : title
+            title : body.title,
+            taskBoardID: body.taskBoardID
         }, function(err, taskslists) {
             if (err)
                 response.send(err);
-            self.GetTaskLists(response);
+            self.GetTaskListsByBoard(body.taskBoardID, response);
         });
     }
     

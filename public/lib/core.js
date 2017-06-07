@@ -92,20 +92,13 @@ TaskManager.controller('mainController', function($scope, $http) {
             $scope.taskBoards = data;
             console.log("Taskboards:" + data);
             console.log(data);
+            $scope.loadTaskboard(data[0]);            
         })
         .error(function(data) {
             console.log('Error: ' + data);
         }); 
     
-    $http.get('/api/tasklists')
-        .success(function(data) {
-            $scope.tasklists = data;
-            console.log("taskslists:" + data);
-            console.log(data);
-        })
-        .error(function(data) {
-            console.log('Error: ' + data);
-        });
+   
     
     $http.get('/api/tasks')
         .success(function(data) {
@@ -119,6 +112,7 @@ TaskManager.controller('mainController', function($scope, $http) {
     
      // when submitting the add form, send the text to the node API
     $scope.createTaskList = function() {
+        $scope.tasklistData.taskBoardID = $scope.currentTaskBoard._id;
         $http.post('/api/tasklists', $scope.tasklistData)
             .success(function(data) {
                 $scope.tasklistData = {}; // clear the form so our user is ready to enter another
@@ -169,6 +163,39 @@ TaskManager.controller('mainController', function($scope, $http) {
                 console.log('Error: ' + data);
             });
     };
+    
+    $scope.createTaskBoard = function(taskboardData) {   
+
+        $http.post('/api/taskboards', taskboardData)
+            .success(function(data) {
+                taskboardData = {}; // clear the form so our user is ready to enter another
+                $scope.taskBoards = data;
+                console.log(data);
+            })
+            .error(function(data) {
+                console.log('Error: ' + data);
+            });
+    };
+    
+    $scope.loadTaskboard = function(taksboardData)
+    {
+        console.log("Loading taskboard: " + taksboardData);
+        $scope.currentTaskBoard = taksboardData;
+        $scope.loadTaskLists($scope.currentTaskBoard._id);
+    }
+    
+    $scope.loadTaskLists = function(taskboardID)
+    {
+        $http.get('/api/tasklists/' + taskboardID)
+        .success(function(data) {
+            $scope.tasklists = data;
+            console.log("taskslists:" + data);
+            console.log(data);
+        })
+        .error(function(data) {
+            console.log('Error: ' + data);
+        });
+    }
     
     $scope.handleDrop = function(taskID, taskListID) {
         

@@ -55,8 +55,12 @@ app.patch('/api/tasks/:id/tasklist/:tasklistID', function(req, res) {
     taskCtrl.UpdateTasklist(req.params.id, req.params.tasklistID, res);
 });
 
-app.get('/api/tasklists', function(req, res) {
+app.get('/api/tasklists/', function(req, res) {
     taskListCtrl.GetTaskLists(res);
+});
+
+app.get('/api/tasklists/:taskboardID', function(req, res) {
+    taskListCtrl.GetTaskListsByBoard(req.params.taskboardID, res);
 });
 
 app.get('/api/tasklists/tasks/:id', function(req, res) {
@@ -65,7 +69,7 @@ app.get('/api/tasklists/tasks/:id', function(req, res) {
 
 
 app.post('/api/tasklists', function(req, res) {
-    taskListCtrl.AddTaskList(req.body.title, res);
+    taskListCtrl.AddTaskList(req.body, res);
 });
 
 // delete a todo
@@ -74,9 +78,11 @@ app.delete('/api/tasklists/:id', function(req, res) {
 });
 
 app.get('/api/taskboards', function(req, res) {
-    taskBoardCtrl.GetTaskLists(res);
+    taskBoardCtrl.GetTaskBoards(res);
 });
-
+app.post('/api/taskboards', function(req, res) {
+    taskBoardCtrl.AddTaskBoard(req.body.title, res);
+});
 
 app.get('*', function(req, res) {
         res.sendfile(views + 'index.html'); // load the single view file (angular will handle the page changes on the front-end)

@@ -21,15 +21,12 @@
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">Dropdown <span class="caret"/>
 					</a>
 					<ul class="dropdown-menu">
-                        <li ng-show="taskBoards">
-							<p>No boards created!</p>
-						</li>		
 						<li ng-repeat="taskboard in taskBoards">
-							<a href="#">{{taskboard.title}}</a>
+							<a ng-click="loadTaskboard(taskboard)">{{taskboard.title}}</a>
 						</li>
                         <li role="separator" class="divider"></li>
                         <li>
-                            <form ng-submit="createTaskBoard()">
+                            <form ng-submit="createTaskBoard(taskboardData);taskboardData={}">
                                 <div class="input-group">
                                     <input type="text" class="form-control input-md text-center" placeholder="Create a new board" ng-model="taskboardData.title">
                                      <span class="input-group-btn input-md ">
